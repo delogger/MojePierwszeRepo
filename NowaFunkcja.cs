@@ -280,47 +280,36 @@ class Program
 
 
 
-    static void ExpandZeros(char[,] board, char[,] displayBoard, int x, int y)
+    static void ExpandZeros(char[,] board, char[,] displayBoard, int startX, int startY)
+{
+    int height = board.GetLength(0);
+    int width = board.GetLength(1);
+    Queue<(int x, int y)> queue = new Queue<(int x, int y)>();
+    queue.Enqueue((startX, startY));
 
+    while (queue.Count > 0)
     {
+        var (x, y) = queue.Dequeue();
+        int count = CountAdjacentBombs(board, x, y);
+        displayBoard[y, x] = count.ToString()[0];
 
-        int height = board.GetLength(0);
-
-        int width = board.GetLength(1);
-
-
-
-        for (int i = Math.Max(0, y - 1); i <= Math.Min(height - 1, y + 1); i++)
-
+        if (count == 0)
         {
-
-            for (int j = Math.Max(0, x - 1); j <= Math.Min(width - 1, x + 1); j++)
-
+            for (int i = Math.Max(0, y - 1); i <= Math.Min(height - 1, y + 1); i++)
             {
-
-                if (displayBoard[i, j] == ' ' && board[i, j] != '*')
-
+                for (int j = Math.Max(0, x - 1); j <= Math.Min(width - 1, x + 1); j++)
                 {
-
-                    displayBoard[i, j] = CountAdjacentBombs(board, j, i).ToString()[0];
-
-
-
-                    if (displayBoard[i, j] == '0')
-
+                    if (displayBoard[i, j] == ' ' && board[i, j] != '*')
                     {
-
-                        ExpandZeros(board, displayBoard, j, i);
-
+                        queue.Enqueue((j, i));
+                        displayBoard[i, j] = '0'; // отмечаем как посещённое
                     }
-
                 }
-
             }
-
         }
-
     }
+}
+
 
 
 
