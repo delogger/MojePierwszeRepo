@@ -202,7 +202,7 @@ class Program
 
 
 
-        Console.WriteLine("Plansza Saper:");
+        Console.WriteLine("=== Plansza Saper ===");
 
         Console.Write("  ");
 
